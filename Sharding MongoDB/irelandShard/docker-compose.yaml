@@ -1,0 +1,36 @@
+
+version: '3'
+
+services:
+
+  irelandShardSvr1:
+    container_name: irelandShardSvr1
+    image: mongo
+    command: mongod --shardsvr --replSet irelandShardRs --port 27017 --dbpath /data/db
+    ports:
+      - 50001:27017
+    volumes:
+      - irelandShardSvr1:/data/db
+
+  irelandShardSvr2:
+    container_name: irelandShardSvr2
+    image: mongo
+    command: mongod --shardsvr --replSet irelandShardRs --port 27017 --dbpath /data/db
+    ports:
+      - 50002:27017
+    volumes:
+      - irelandShardSvr2:/data/db
+
+  irelandShardSvr3:
+    container_name: irelandShardSvr3
+    image: mongo
+    command: mongod --shardsvr --replSet irelandShardRs --port 27017 --dbpath /data/db
+    ports:
+      - 50003:27017
+    volumes:
+      - irelandShardSvr3:/data/db
+
+volumes:
+  irelandShardSvr1: {}
+  irelandShardSvr2: {}
+  irelandShardSvr3: {}

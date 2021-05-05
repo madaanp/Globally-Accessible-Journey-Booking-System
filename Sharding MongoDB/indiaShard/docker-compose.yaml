@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  indiaShardSvr1:
+    container_name: indiaShardSvr1
+    image: mongo
+    command: mongod --shardsvr --replSet indiaShardRs --port 27017 --dbpath /data/db
+    ports:
+      - 50004:27017
+    volumes:
+      - indiaShardSvr1:/data/db
+
+  indiaShardSvr2:
+    container_name: indiaShardSvr2
+    image: mongo
+    command: mongod --shardsvr --replSet indiaShardRs --port 27017 --dbpath /data/db
+    ports:
+      - 50005:27017
+    volumes:
+      - indiaShardSvr2:/data/db
+
+  indiaShardSvr3:
+    container_name: indiaShardSvr3
+    image: mongo
+    command: mongod --shardsvr --replSet indiaShardRs --port 27017 --dbpath /data/db
+    ports:
+      - 50006:27017
+    volumes:
+      - indiaShardSvr3:/data/db
+
+volumes:
+  indiaShardSvr1: {}
+  indiaShardSvr2: {}
+  indiaShardSvr3: {}
+
