@@ -99,18 +99,23 @@ Add shard
 sh.addShard("indiaShardRs/192.168.1.5:50004,192.168.1.5:50005,192.168.1.5:50006")
 sh.status()
 ```
-show
 
-
-#to check containers
+### Check containers
+```
 docker ps
+```
 
-#enable sharding for a database
+### Enable sharding for a database
+```
 sh.enableSharding("dbname")
+```
 
-#sharding a collection within that database using shard key as hashed booking_id
+### Sharding a collection within that database using shard key as hashed booking_id
+```
 sh.shardCollection("dbname.bookings", {"booking_id":"hashed"})
+```
 
-#get shard distribution
+### Check shard distribution
+```
 db.bookings.getShardDistribution()
-
+```
