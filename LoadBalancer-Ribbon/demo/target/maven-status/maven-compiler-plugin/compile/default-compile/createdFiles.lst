@@ -1,0 +1,5 @@
+com\microservicesDemo\demo\ExchangeValue.class
+com\microservicesDemo\demo\ExchangeValueRepository.class
+com\microservicesDemo\demo\DemoApplication.class
+com\currencyconversion\demo\TestingcurrencyconversionApplication.class
+com\microservicesDemo\demo\ForexController.class
