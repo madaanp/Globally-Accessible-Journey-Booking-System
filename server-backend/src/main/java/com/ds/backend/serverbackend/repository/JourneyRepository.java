@@ -9,4 +9,8 @@ import java.util.Optional;
 public interface JourneyRepository extends MongoRepository<Journey, String> {
     Optional<Journey> findById(String Id);
     List<Journey> findByUsername(String username);
+
+    List<Journey> findByStartingPoint(String starting_point);
+    List<Journey> findByEndingPoint(String ending_point);
+
 }

@@ -9,6 +9,7 @@ public class JBSUtility {
 
     public static final String JOURNEY_BOOK_SUCCESS = "Journey booked successfully";
     public static final String JOURNEY_BOOK_FAILURE_SLOT_BOOKED = "Driver has already booked a slot for this time";
+    public static final String JOURNEY_BOOK_FAILURE_SLOT_UNAVLBL = "Already 50 bookings exist ! ";
 
     public static final String JOURNEY_CANCEL_SUCCESS = "Journey cancelled successfully";
     public static final String JOURNEY_CANCEL_FAILURE_NON_EXIST = "Journey does not exist";

@@ -32,7 +32,6 @@ public class JourneyController {
         try {
             if(driver.getUsername()!=null){
                 String username = driver.getUsername();
-                List<Journey> tmp = journeyRepository.findByUsername(username);
                 List<Journey> allJourneys = journeyRepository.findByUsername(username)
                         .stream()
                         .filter(j -> j.getStatus().equals(JBSUtility.JOURNEY_BOOKED_STATUS))
@@ -49,27 +48,58 @@ public class JourneyController {
     @PostMapping("/bookJourney")
     public ResponseEntity<ApiResponse> createJourney(@RequestBody JourneyBookingRequest bookingRequest) {
         try{
+            if(!isSlotAvailable(bookingRequest)){
+                return ResponseEntity.ok(new ApiResponse(2, JBSUtility.JOURNEY_BOOK_FAILURE_SLOT_UNAVLBL));
+            }
             List<Journey> allJourneysForUser = journeyRepository.findByUsername(bookingRequest.getUsername());
             if(allJourneysForUser.isEmpty()){
                 Journey newJourney = journeyRepository.save(new Journey(bookingRequest.getUsername(), bookingRequest.getStarting_point(), bookingRequest.getEnding_point(), bookingRequest.getJourney_date_time(), JBSUtility.JOURNEY_BOOKED_STATUS));
                 return ResponseEntity.ok(new ApiResponse(0, JBSUtility.JOURNEY_BOOK_SUCCESS));
             }else {
-                List<Date> bookedSlots = new ArrayList<>();
-                for(Journey bookedJourney : allJourneysForUser){
-                    if(bookedJourney.getStatus().equalsIgnoreCase(JBSUtility.JOURNEY_BOOKED_STATUS)){
-                        bookedSlots.add(bookedJourney.getJourney_date_time());
-                    }
-                }
-                if(bookedSlots.contains(bookingRequest.getJourney_date_time())){
-                    return ResponseEntity.ok(new ApiResponse(1, JBSUtility.JOURNEY_BOOK_FAILURE_SLOT_BOOKED));
-                }else{
-                    Journey newJourney = journeyRepository.save(new Journey(bookingRequest.getUsername(), bookingRequest.getStarting_point(), bookingRequest.getEnding_point(), bookingRequest.getJourney_date_time(), JBSUtility.JOURNEY_BOOKED_STATUS));
-                    return ResponseEntity.ok(new ApiResponse(0, JBSUtility.JOURNEY_BOOK_SUCCESS));
-                }
+                return checkSlotAlreadyBookedForDriver(allJourneysForUser, bookingRequest);
             }
-
         }catch (Exception e){
             return ResponseEntity.badRequest().body(new ApiResponse(-1, JBSUtility.JBS_SERVER_ERROR));
+        }
+    }
+
+    private Boolean isSlotAvailable(JourneyBookingRequest bookingRequest){
+
+        String startPoint = bookingRequest.getStarting_point();
+        String endPoint = bookingRequest.getEnding_point();
+
+        List<Journey> startLocJourneys = journeyRepository.findByStartingPoint(startPoint)
+                .stream()
+                .filter(j -> j.getStatus().equals(JBSUtility.JOURNEY_BOOKED_STATUS))
+                .collect(Collectors.toList());;
+
+        int counter = 0;
+        for(Journey existingJourney : startLocJourneys){
+            if(counter>50){
+                return Boolean.FALSE;
+            }
+            if(existingJourney.getEndingPoint().equalsIgnoreCase(endPoint)
+                && existingJourney.getJourney_date_time().equals(bookingRequest.getJourney_date_time())){
+                counter++;
+            }
+        }
+
+        System.out.println("Number of existing bookings on this route for that time - " +counter);
+        return Boolean.TRUE;
+    }
+
+    private ResponseEntity<ApiResponse> checkSlotAlreadyBookedForDriver(List<Journey> allJourneysForUser, JourneyBookingRequest bookingRequest){
+        List<Date> bookedSlots = new ArrayList<>();
+        for(Journey bookedJourney : allJourneysForUser){
+            if(bookedJourney.getStatus().equalsIgnoreCase(JBSUtility.JOURNEY_BOOKED_STATUS)){
+                bookedSlots.add(bookedJourney.getJourney_date_time());
+            }
+        }
+        if(bookedSlots.contains(bookingRequest.getJourney_date_time())){
+            return ResponseEntity.ok(new ApiResponse(1, JBSUtility.JOURNEY_BOOK_FAILURE_SLOT_BOOKED));
+        }else{
+            Journey newJourney = journeyRepository.save(new Journey(bookingRequest.getUsername(), bookingRequest.getStarting_point(), bookingRequest.getEnding_point(), bookingRequest.getJourney_date_time(), JBSUtility.JOURNEY_BOOKED_STATUS));
+            return ResponseEntity.ok(new ApiResponse(0, JBSUtility.JOURNEY_BOOK_SUCCESS));
         }
     }
 

@@ -5,9 +5,11 @@ import com.ds.backend.serverbackend.repository.DriverRepository;
 import com.ds.backend.serverbackend.response.ApiResponse;
 import com.ds.backend.serverbackend.utility.JBSUtility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/admin")
@@ -24,7 +26,7 @@ public class AdminController {
                 return ResponseEntity.ok(new ApiResponse(1, JBSUtility.CREATE_DRIVER_FAILURE_EXISTS));
             }
             else{
-                Driver newDriver = driverRepository.save(new Driver(driver.getUsername(), driver.getPassword()));
+                Driver newDriver = driverRepository.save(new Driver(driver.getUsername(), driver.getPassword(), driver.getEmail(), driver.getCountry()));
                 return ResponseEntity.ok(new ApiResponse(0, JBSUtility.CREATE_DRIVER_SUCCESS));
             }
         } catch (Exception e) {

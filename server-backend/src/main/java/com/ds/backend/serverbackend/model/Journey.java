@@ -11,8 +11,8 @@ public class Journey {
     @Id
     private String id;
     private String username;
-    private String starting_point;
-    private String ending_point;
+    private String startingPoint;
+    private String endingPoint;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date journey_date_time;
@@ -22,10 +22,10 @@ public class Journey {
     public Journey() {
     }
 
-    public Journey(String username, String starting_point, String ending_point, Date journey_date_time, String status) {
+    public Journey(String username, String startingPoint, String endingPoint, Date journey_date_time, String status) {
         this.username = username;
-        this.starting_point = starting_point;
-        this.ending_point = ending_point;
+        this.startingPoint = startingPoint;
+        this.endingPoint = endingPoint;
         this.journey_date_time = journey_date_time;
         this.status = status;
     }
@@ -46,20 +46,20 @@ public class Journey {
         this.username = username;
     }
 
-    public String getStarting_point() {
-        return starting_point;
+    public String getStartingPoint() {
+        return startingPoint;
     }
 
-    public void setStarting_point(String starting_point) {
-        this.starting_point = starting_point;
+    public void setStartingPoint(String startingPoint) {
+        this.startingPoint = startingPoint;
     }
 
-    public String getEnding_point() {
-        return ending_point;
+    public String getEndingPoint() {
+        return endingPoint;
     }
 
-    public void setEnding_point(String ending_point) {
-        this.ending_point = ending_point;
+    public void setEndingPoint(String endingPoint) {
+        this.endingPoint = endingPoint;
     }
 
     public Date getJourney_date_time() {
