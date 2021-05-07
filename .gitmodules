@@ -1,0 +1,6 @@
+[submodule "KafkaConsumer"]
+	path = KafkaConsumer
+	url = https://github.com/aswinrajeevofficial/KafkaConsumer.git
+[submodule "KafkaProducer"]
+	path = KafkaProducer
+	url = https://github.com/aswinrajeevofficial/KafkaProducer.git
